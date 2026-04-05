@@ -1,3 +1,11 @@
+<?php
+
+require_once('./orm/PelangganORM.php');
+
+$listPelanggan = PelangganORM::find_many();
+
+?>
+
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
 	<div class="pcoded-wrapper">
@@ -42,30 +50,31 @@
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>First Name</th>
-                                                        <th>Last Name</th>
-                                                        <th>Username</th>
+                                                        <th>Nama</th>
+                                                        <th>Email</th>
+                                                        <th>Telepon</th>
+                                                        <th>Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody style="color: white;">
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>Mark</td>
-                                                        <td>Otto</td>
-                                                        <td>@mdo</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>Jacob</td>
-                                                        <td>Thornton</td>
-                                                        <td>@fat</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>Larry</td>
-                                                        <td>the Bird</td>
-                                                        <td>@twitter</td>
-                                                    </tr>
+                                                    <?php if(count($listPelanggan) > 0): ?>
+                                                        <?php $no = 1; foreach($listPelanggan as $pelanggan): ?>
+                                                        <tr>
+                                                            <td><?php echo $no++; ?></td>
+                                                            <td><?php echo $pelanggan->nama; ?></td>
+                                                            <td><?php echo $pelanggan->email; ?></td>
+                                                            <td><?php echo $pelanggan->telepon; ?></td>
+                                                            <td>
+                                                                <a href="?page=pelanggan/edit&id=<?php echo $pelanggan->id; ?>" class="btn btn-sm btn-warning">Edit</a>
+                                                                <a href="?page=pelanggan/delete&id=<?php echo $pelanggan->id; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
+                                                            </td>
+                                                        </tr>
+                                                        <?php endforeach; ?>
+                                                    <?php else: ?>
+                                                        <tr>
+                                                            <td colspan="5" class="text-center">Tidak ada data pelanggan</td>
+                                                        </tr>
+                                                    <?php endif; ?>
                                                 </tbody>
                                             </table>
                                         </div>
